@@ -20,7 +20,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('question1Text').textContent = config.questions.first.text;
     document.getElementById('yesBtn1').textContent = config.questions.first.yesBtn;
     document.getElementById('noBtn1').textContent = config.questions.first.noBtn;
-    document.getElementById('secretAnswerBtn').textContent = config.questions.first.secretAnswer;
     document.getElementById('question2Text').textContent = config.questions.second.text;
     document.getElementById('startText').textContent = config.questions.second.startText;
     document.getElementById('nextBtn').textContent = config.questions.second.nextBtn;
@@ -198,21 +197,42 @@ function setupMusicPlayer() {
     musicSource.src = config.music.musicUrl;
     bgMusic.volume = config.music.volume || 0.5;
     bgMusic.load();
+    
+    // Add error handling for audio
+    bgMusic.addEventListener('error', (e) => {
+        console.error('Audio loading failed:', e);
+        musicToggle.textContent = '❌ Music Unavailable';
+        musicToggle.disabled = true;
+    });
+    
+    bgMusic.addEventListener('loadeddata', () => {
+        console.log('Audio loaded successfully');
+    });
 
     if (config.music.autoplay) {
         const playPromise = bgMusic.play();
         if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Autoplay prevented");
-                musicToggle.textContent = config.music.startText;
-            });
+            playPromise
+                .then(() => {
+                    musicToggle.textContent = config.music.stopText;
+                })
+                .catch(error => {
+                    console.log("Autoplay prevented by browser - user must click to play");
+                    musicToggle.textContent = config.music.startText;
+                });
         }
     }
 
     musicToggle.addEventListener('click', () => {
         if (bgMusic.paused) {
-            bgMusic.play();
-            musicToggle.textContent = config.music.stopText;
+            bgMusic.play()
+                .then(() => {
+                    musicToggle.textContent = config.music.stopText;
+                })
+                .catch(error => {
+                    console.error("Playback failed:", error);
+                    alert('Unable to play music. The audio file may be unavailable or your browser blocked playback.');
+                });
         } else {
             bgMusic.pause();
             musicToggle.textContent = config.music.startText;
