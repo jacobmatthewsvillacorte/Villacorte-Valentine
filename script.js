@@ -79,10 +79,12 @@ function showNextQuestion(questionNumber) {
     document.getElementById(`question${questionNumber}`).classList.remove('hidden');
 }
 
-// Move button when clicked
+// Move button when clicked (with mobile safe boundaries)
 function moveButton(button) {
-    const x = Math.random() * (window.innerWidth - button.offsetWidth);
-    const y = Math.random() * (window.innerHeight - button.offsetHeight);
+    const maxX = Math.min(window.innerWidth - button.offsetWidth - 20, window.innerWidth * 0.9);
+    const maxY = Math.min(window.innerHeight - button.offsetHeight - 20, window.innerHeight * 0.9);
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
     button.style.position = 'fixed';
     button.style.left = x + 'px';
     button.style.top = y + 'px';
