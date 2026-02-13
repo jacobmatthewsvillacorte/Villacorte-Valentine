@@ -22,7 +22,7 @@ const CONFIG = {
             text: "Do you like me?",
             yesBtn: "Yes",
             noBtn: "No",
-            secretAnswer: "I don't like you, I love you! ❤️"
+            secretAnswer: ""  // Removed secret answer
         },
         second: {
             text: "How much do you love me?",
@@ -70,11 +70,11 @@ const CONFIG = {
     // Background Music
     music: {
         enabled: true,
-        autoplay: true,
-        musicUrl: "https://res.cloudinary.com/dncywqfpb/video/upload/v1738399057/music_qrhjvy.mp3",
+        autoplay: false,  // Changed to false - user must click to play
+        musicUrl: "https://res.cloudinary.com/dpkcv1sne/video/upload/v1770986680/Paramore__The_Only_Exception_OFFICIAL_VIDEO_vtewrt.mp3",
         startText: "🎵 Play Music",
         stopText: "🔇 Stop Music",
-        volume: 0.5
+        volume: 0.7  // Increased volume
     },
 
     // 🆕 EMAIL NOTIFICATION - Get notified when she says YES!
